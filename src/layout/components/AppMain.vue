@@ -9,6 +9,13 @@
 <script>
 export default {
   name: 'AppMain',
+  // eslint-disable-next-line vue/require-prop-types
+  props: {
+    headerBacground: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     key() {
       return this.$route.path

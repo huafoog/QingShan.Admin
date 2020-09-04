@@ -1,7 +1,7 @@
-import commonTable from './common/commonTable'
+import commonTable from './Common/commonTable'
 
 export default {
   install(Vue) {
-    Vue.component('commonTable', commonTable)
+    Vue.component('CommonTable', commonTable)
   }
 }

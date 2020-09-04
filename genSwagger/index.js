@@ -72,7 +72,7 @@ function httpgetJson(url) {
 }
 
 const srcFolder = '/src'
-const url = 'http://localhost:61793/swagger/v1/swagger.json'
+const url = 'http://localhost:6001/swagger/v1/swagger.json'
 // const argv = process.argv
 // console.log(argv)
 

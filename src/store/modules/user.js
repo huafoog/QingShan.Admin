@@ -1,6 +1,9 @@
 import { Login } from '@/api/Admin/Account'
 import { GetUserInfo } from '@/api/Admin/User'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { isNull } from '@/utils/comm'
+import { getUserInfo, setUserInfo, removeUserInfo, getAvatar } from '@/utils/cache'
+import fileUrl from '@/utils/config'
 // import { resetRouter } from '@/router'
 import { Message } from 'element-ui'
 
@@ -8,7 +11,7 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: getAvatar()
   }
 }
 
@@ -55,27 +58,31 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      GetUserInfo().then(response => {
-        const { data } = response
-        if (!data) {
-          reject('未获取到用户信息')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+      const userInfo = getUserInfo()
+      if (isNull(userInfo)) {
+        GetUserInfo().then(response => {
+          const { data } = response
+          if (!data) {
+            reject('未获取到用户信息')
+          }
+          setUserInfo(data)
+          const { name, avatar } = data
+          commit('SET_NAME', name)
+          commit('SET_AVATAR', fileUrl.fileUrl + avatar)
+          resolve(data)
+        }).catch(error => {
+          reject(error)
+        })
+      } else {
+        resolve(userInfo)
+      }
     })
   },
-
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       removeToken() // must remove  token  first
+      removeUserInfo()
       commit('RESET_STATE')
       resolve()
     })

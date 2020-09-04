@@ -9,6 +9,15 @@ export function Add(data) {
   })
 }
 
+// 修改用户
+export function Update(data) {
+  return request({
+    url: '/Api/Admin/User/Update',
+    method: 'post',
+    data
+  })
+}
+
 // 获取用户信息
 export function GetUserInfo(data) {
   return request({
